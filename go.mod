@@ -1,4 +1,4 @@
-module github.com/ssh-vault/ssh-vault
+module ssh-vault
 
 go 1.16
 

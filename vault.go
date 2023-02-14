@@ -20,6 +20,7 @@ type vault struct {
 	Fingerprint string
 	key         string
 	vault       string
+	Name        string
 }
 
 // GITHUB https://github.com/<username>.keys

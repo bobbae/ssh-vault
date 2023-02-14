@@ -21,7 +21,12 @@ func (v *vault) Close(data []byte) error {
 	payload.WriteString(";")
 	payload.WriteString(base64.StdEncoding.EncodeToString(data))
 
-	vault := []byte(fmt.Sprintf("SSH-VAULT;AES256;%s\n%s\n",
+	if v.Name == "" {
+		v.Name = "SSH-VAULT"
+	}
+
+	vault := []byte(fmt.Sprintf("%s;AES256;%s\n%s\n",
+		v.Name,
 		v.Fingerprint,
 		v.Encode(payload.String(), 64)),
 	)

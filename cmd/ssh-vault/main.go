@@ -9,9 +9,10 @@ import (
 	"path/filepath"
 	"regexp"
 
+	sv "ssh-vault"
+
 	"github.com/ssh-vault/crypto"
 	"github.com/ssh-vault/crypto/aead"
-	sv "github.com/ssh-vault/ssh-vault"
 )
 
 var version string
@@ -28,6 +29,7 @@ func main() {
 		o             = flag.String("o", "", "Write output to `file` instead of stdout. Only for option view, example:\n            ssh-vault -o /tmp/out.txt view vault.ssh")
 		u             = flag.String("u", "", "GitHub `username or URL`, optional [-k N] where N is the key index to use, example:\n            ssh-vault -u <user> create      # Using first key found in github.com/<user>.keys\n            ssh-vault -u <user> -k 2 create # Using second key")
 		v             = flag.Bool("v", false, fmt.Sprintf("Print version: %s", version))
+		n             = flag.String("n", "SSH-VAULT", "name to use in encoded file header")
 		options       = []string{"create", "edit", "view"}
 		rxFingerprint = regexp.MustCompile(`^([0-9a-f]{2}[:-]){15}([0-9a-f]{2})$`)
 		err           error
@@ -105,6 +107,7 @@ func main() {
 		exit1(err)
 	}
 
+	vault.Name = *n
 	// ssh-keygen -f id_rsa.pub -e -m PKCS8
 	PKCS8, err := vault.PKCS8()
 	if err != nil {
